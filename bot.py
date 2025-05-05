@@ -1,6 +1,8 @@
 # ❗️❗️❗️ ИМПОРТ БИБЛИОТЕК ТГ ДЛЯ БОТА ---------------------------------------------------------
 
 import re
+import os
+from dotenv import load_dotenv
 import random
 from telegram.constants import ChatType
 from telegram import (
@@ -17,8 +19,8 @@ from telegram import (
 from datetime import timedelta, datetime
 from telegram.ext import ChatMemberHandler, CallbackQueryHandler, ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 
-# ЛОГ ДЕБАГА В ТРЕД 337
-DEBUG_CHAT_ID = -4627280051
+# ЛОГ ДЕБАГА ОТДЕЛЬНЫЙ ЧАТ
+DEBUG_CHAT_ID = int(os.getenv("DEBUG_CHAT_ID"))
 
 def debug_log_sync(text: str):
     print(f"[DEBUG] {text}")
@@ -36,7 +38,7 @@ async def debug_log(context, text: str):
 
 # ❗️❗️❗️ ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ БОТА ---------------------------------------------------------
 
-TOKEN = '7674030439:AAFUiV3e4I2eMa2EMPjGBoK2xSURcp20_q0'
+TOKEN = os.getenv("BOT_TOKEN")
 
 
 SOURCE_CHAT_ID = -1001887222284  # ID исходной группы
