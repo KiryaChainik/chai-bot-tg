@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f5b8add1-fa8f-48c9-8487-414cf7ec7d8a" name="Changes" comment="First commit">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="f5b8add1-fa8f-48c9-8487-414cf7ec7d8a" name="Changes" comment="First commit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,7 +28,7 @@
 }]]></component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
-    "url": "https://github.com/KiryaChainik/chai_tg_bot",
+    "url": "https://github.com/KiryaChainik/chai-tg-bot",
     "accountId": "98dae932-2d1f-4ab0-b174-cf39d7eff705"
   }
 }]]></component>
@@ -81,7 +79,7 @@
       <workItem from="1746468219101" duration="260000" />
       <workItem from="1746468489136" duration="155000" />
       <workItem from="1746468647985" duration="61000" />
-      <workItem from="1746468715923" duration="3080000" />
+      <workItem from="1746468715923" duration="3395000" />
     </task>
     <task id="LOCAL-00001" summary="First commit">
       <option name="closed" value="true" />
