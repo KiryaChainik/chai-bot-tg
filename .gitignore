@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.idea/
+.venv/
+venv/
+*.env
+bot.token
