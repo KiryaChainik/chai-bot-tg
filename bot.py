@@ -1,23 +1,13 @@
 # ❗️❗️❗️ ИМПОРТ БИБЛИОТЕК ТГ ДЛЯ БОТА ---------------------------------------------------------
 
-import re
 import os
-from dotenv import load_dotenv
 import random
-from telegram.constants import ChatType
-from telegram import (
-    Update,
-    ChatPermissions,
-    InlineKeyboardMarkup,
-    InlineKeyboardButton,
-    BotCommand,
-    BotCommandScopeChatAdministrators,
-    BotCommandScopeChat,
-    BotCommandScopeDefault,
-    MenuButtonCommands,
-)
+import re
 from datetime import timedelta, datetime
-from telegram.ext import ChatMemberHandler, CallbackQueryHandler, ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
+
+import telegram
+from telegram.ext import ChatMemberHandler, CallbackQueryHandler, ApplicationBuilder, CommandHandler, ContextTypes, \
+    MessageHandler, filters
 
 # ЛОГ ДЕБАГА ОТДЕЛЬНЫЙ ЧАТ
 DEBUG_CHAT_ID = int(os.getenv("DEBUG_CHAT_ID"))
@@ -55,7 +45,7 @@ TOPIC_ID_BY_HASHTAG = { # хэштеги и номера тем
 }
 
 # ПЕРЕНАПРАВЛЕНИЕ СООБЩЕНИЙ ИЗ ТГК ПО ХЭШТЕГУ
-async def forward_by_hashtag(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def forward_by_hashtag(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.channel_post
 
     if not message:
@@ -96,7 +86,7 @@ async def set_bot_commands(application):
     group_ids = [-1002443521655]  # ← сюда добавляй все нужные chat_id
 
     # Установка глобального меню кнопок
-    await application.bot.set_chat_menu_button(menu_button=MenuButtonCommands())
+    await application.bot.set_chat_menu_button(menu_button=telegram.MenuButtonCommands())
     debug_log_sync("[CMD] ✅ Установлено глобальное меню команд")
 
     for chat_id in group_ids:
@@ -105,39 +95,39 @@ async def set_bot_commands(application):
         # Команды для всех пользователей в группе
         await application.bot.set_my_commands(
             commands=[
-                BotCommand("menu", "Показать все доступные команды бота"),
-                BotCommand("rules", "Показать правила группы"),
+                telegram.BotCommand("menu", "Показать все доступные команды бота"),
+                telegram.BotCommand("rules", "Показать правила группы"),
             ],
-            scope=BotCommandScopeChat(chat_id=chat_id)
+            scope=telegram.BotCommandScopeChat(chat_id=chat_id)
         )
 
         # Команды только для админов
         await application.bot.set_my_commands(
             commands=[
-                BotCommand("menu", "Показать все доступные команды бота"),
-                BotCommand("rules", "Показать правила группы"),
-                BotCommand("set_rules", "Установить правила"),
-                BotCommand("ban", "Забанить пользователя"),
-                BotCommand("unban", "Разбанить пользователя"),
-                BotCommand("kick", "Исключить пользователя"),
-                BotCommand("mute", "Обеззвучить пользователя"),
-                BotCommand("unmute", "Снять мут"),
+                telegram.BotCommand("menu", "Показать все доступные команды бота"),
+                telegram.BotCommand("rules", "Показать правила группы"),
+                telegram.BotCommand("set_rules", "Установить правила"),
+                telegram.BotCommand("ban", "Забанить пользователя"),
+                telegram.BotCommand("unban", "Разбанить пользователя"),
+                telegram.BotCommand("kick", "Исключить пользователя"),
+                telegram.BotCommand("mute", "Обеззвучить пользователя"),
+                telegram.BotCommand("unmute", "Снять мут"),
             ],
-            scope=BotCommandScopeChatAdministrators(chat_id=chat_id)
+            scope=telegram.BotCommandScopeChatAdministrators(chat_id=chat_id)
         )
 
     # Резерв: глобальные команды по умолчанию
     await application.bot.set_my_commands(
         commands=[
-            BotCommand("rules", "Показать правила группы"),
+            telegram.BotCommand("rules", "Показать правила группы"),
         ],
-        scope=BotCommandScopeDefault()
+        scope=telegram.BotCommandScopeDefault()
     )
 
     debug_log_sync("[CMD] ✅ Команды установлены во всех указанных группах")
 
 # ОБРАБОТЧИК НАЖАТИЙ КНОПОК МЕНЮ ВСЕХ КОМАНД
-async def handle_menu_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_menu_buttons(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     user = query.from_user
     data = query.data
@@ -152,7 +142,7 @@ async def handle_menu_buttons(update: Update, context: ContextTypes.DEFAULT_TYPE
         await debug_log(context, f"[MENU] 📥 {user.full_name} ({user.id}) нажал кнопку 'Мои права'")
 
 # ПОЛУЧЕНИЕ ID ЧАТА ПО КОМАНДЕ
-async def show_chat_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def show_chat_id(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     chat = update.effective_chat
     user = update.effective_user
 
@@ -160,7 +150,7 @@ async def show_chat_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await debug_log(context, f"[CHAT_ID] ℹ️ {user.full_name} ({user.id}) запросил chat_id: {chat.id}")
 
 # ПОЛУЧЕНИЕ ID ТРЕДА ПО КОМАНДЕ
-async def thread_id_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def thread_id_command(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message or update.channel_post
     if not message:
         await debug_log(context, "[THREAD_ID] ⚠️ Нет message — ни обычного, ни channel_post")
@@ -183,7 +173,7 @@ async def thread_id_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await debug_log(context, f"[THREAD_ID] 📌 Запрос от {user.full_name if hasattr(user, 'full_name') else user.title}: {message.message_thread_id}")
 
 # БАН ПОЛЬЗОВАТЕЛЯ
-async def ban_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def ban_user(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     chat = update.effective_chat
     user = update.effective_user
@@ -275,7 +265,7 @@ async def ban_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
 
 # РАЗБАН ПОЛЬЗОВАТЕЛЯ
-async def unban_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def unban_user(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     chat = update.effective_chat
     user = update.effective_user
@@ -352,7 +342,7 @@ async def unban_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await debug_log(context, f"[UNBAN] ❌ Ошибка при разблокировке {target_id}: {e}")
 
 # КИК ПОЛЬЗОВАТЕЛЯ
-async def kick_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def kick_user(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     chat = update.effective_chat
     user = update.effective_user
@@ -436,7 +426,7 @@ async def kick_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
 
 # МУТ ПОЛЬЗОВАТЕЛЯ
-async def mute_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def mute_user(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     chat = update.effective_chat
     user = update.effective_user
@@ -571,7 +561,7 @@ async def mute_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.restrict_chat_member(
             chat_id=chat.id,
             user_id=target.id,
-            permissions=ChatPermissions(can_send_messages=False),
+            permissions=telegram.ChatPermissions(can_send_messages=False),
             until_date=until_date
         )
         await debug_log(context, f"[MUTE] ✅ Обеззвучен: {target.full_name} до {until_date}")
@@ -590,7 +580,7 @@ async def mute_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
 
 # РАЗМУТ ПОЛЬЗОВАТЕЛЯ
-async def unmute_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def unmute_user(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     chat = update.effective_chat
     user = update.effective_user
@@ -655,7 +645,7 @@ async def unmute_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.restrict_chat_member(
             chat_id=chat.id,
             user_id=target.id,
-            permissions=ChatPermissions(can_send_messages=True)
+            permissions=telegram.ChatPermissions(can_send_messages=True)
         )
         await debug_log(context, f"[UNMUTE] ✅ Размучен: {target.full_name} ({target.id})")
         mention = target.mention_html()
@@ -672,7 +662,7 @@ async def unmute_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
 
 # ПРАВИЛА ЧАТА - ВЫВЕСТИ
-async def show_rules(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def show_rules(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     rules = context.bot_data.get("rules", {})
     user = update.effective_user
 
@@ -694,7 +684,7 @@ async def show_rules(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(text)
 
 # УСТАНОВКА ПРАВИЛ ЧАТА
-async def set_rules(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def set_rules(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     chat = update.effective_chat
     user = update.effective_user
@@ -765,7 +755,7 @@ async def set_rules(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ПРОВЕРКА НИКА НА АРАБСКИЕ СИМВОЛЫ ПРИ ВХОДЕ
 ARABIC_REGEX = re.compile(r'[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]')
 
-async def check_arabic_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def check_arabic_name(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     chat = update.effective_chat
 
@@ -783,12 +773,12 @@ async def check_arabic_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.restrict_chat_member(
                 chat_id=chat.id,
                 user_id=user.id,
-                permissions=ChatPermissions(can_send_messages=False)
+                permissions=telegram.ChatPermissions(can_send_messages=False)
             )
             await debug_log(context, f"[ARABIC] 🔇 Пользователь замучен за арабский ник: user_id={user.id}")
 
-            keyboard = InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔁 Проверить ник", callback_data=f"check_nick:{user.id}")]
+            keyboard = telegram.InlineKeyboardMarkup([
+                [telegram.InlineKeyboardButton("🔁 Проверить ник", callback_data=f"check_nick:{user.id}")]
             ])
 
             await update.message.reply_text(
@@ -801,7 +791,7 @@ async def check_arabic_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await debug_log(context, f"[ARABIC] ❗ Ошибка при муте: {e}")
 
 # КНОПКА ПРОВЕРКИ НИКА НА АРАБСКИЕ СИМВОЛЫ
-async def handle_check_nick(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_check_nick(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
@@ -814,8 +804,8 @@ async def handle_check_nick(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if ARABIC_REGEX.search(full_name):
         await debug_log(context, f"[ARABIC_BTN] ❌ Арабские символы всё ещё в имени: user_id={user.id}")
 
-        keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔁 Проверить снова", callback_data=f"check_nick:{user.id}")]
+        keyboard = telegram.InlineKeyboardMarkup([
+            [telegram.InlineKeyboardButton("🔁 Проверить снова", callback_data=f"check_nick:{user.id}")]
         ])
 
         await query.edit_message_text(
@@ -827,7 +817,7 @@ async def handle_check_nick(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.restrict_chat_member(
                 chat_id=chat.id,
                 user_id=user.id,
-                permissions=ChatPermissions(can_send_messages=True)
+                permissions=telegram.ChatPermissions(can_send_messages=True)
             )
             await query.edit_message_text("✅ Имя (никнейм) изменёно. Мут снят.")
             await debug_log(context, f"[ARABIC_BTN] ✅ Арабские символы удалены — мут снят: user_id={user.id}")
@@ -838,7 +828,7 @@ async def handle_check_nick(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ПРОВЕРКА НИКА НА ПУСТОЙ
 INVALID_NAME_REGEX = re.compile(r'^[\s.]+$')
 
-async def check_empty_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def check_empty_name(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user = update.effective_user
     chat = update.effective_chat
@@ -855,12 +845,12 @@ async def check_empty_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.restrict_chat_member(
                 chat_id=chat.id,
                 user_id=user.id,
-                permissions=ChatPermissions(can_send_messages=False)
+                permissions=telegram.ChatPermissions(can_send_messages=False)
             )
             await debug_log(context, f"[EMPTY_NAME] 🔇 Замучен за пустое/некорректное имя: user_id={user.id}")
 
-            keyboard = InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔁 Проверить имя (никнейм)", callback_data=f"check_name:{user.id}")]
+            keyboard = telegram.InlineKeyboardMarkup([
+                [telegram.InlineKeyboardButton("🔁 Проверить имя (никнейм)", callback_data=f"check_name:{user.id}")]
             ])
 
             await message.reply_text(
@@ -873,7 +863,7 @@ async def check_empty_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # КНОПКА ПРОВЕРКИ НИКА НА СПЕЦ СИМВОЛЫ И ПУСТОТУ
-async def handle_check_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_check_name(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
@@ -885,8 +875,8 @@ async def handle_check_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not name or INVALID_NAME_REGEX.match(name):
         await debug_log(context, f"[NAME_BTN] ❌ Имя всё ещё невалидно: user_id={user.id}")
-        keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔁 Проверить снова", callback_data=f"check_name:{user.id}")]
+        keyboard = telegram.InlineKeyboardMarkup([
+            [telegram.InlineKeyboardButton("🔁 Проверить снова", callback_data=f"check_name:{user.id}")]
         ])
         await query.edit_message_text(
             "❌ Имя (никнейм) всё ещё отсутствует или слишком подозрительное. Установите нормальное имя.",
@@ -897,7 +887,7 @@ async def handle_check_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.restrict_chat_member(
                 chat_id=chat.id,
                 user_id=user.id,
-                permissions=ChatPermissions(can_send_messages=True)
+                permissions=telegram.ChatPermissions(can_send_messages=True)
             )
             await query.edit_message_text("✅ Имя (никнейм) принято. Мут снят.")
             await debug_log(context, f"[NAME_BTN] ✅ Мут снят: user_id={user.id}, name='{name}'")
@@ -905,7 +895,7 @@ async def handle_check_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await debug_log(context, f"[NAME_BTN] ❗ Ошибка при размуте: {e}")
 
 # ПРОВЕРКА НА ПУСТОЙ ЮЗЕРНЕЙМ
-async def check_empty_username(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def check_empty_username(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user = update.effective_user
     chat = update.effective_chat
@@ -920,12 +910,12 @@ async def check_empty_username(update: Update, context: ContextTypes.DEFAULT_TYP
             await context.bot.restrict_chat_member(
                 chat_id=chat.id,
                 user_id=user.id,
-                permissions=ChatPermissions(can_send_messages=False)
+                permissions=telegram.ChatPermissions(can_send_messages=False)
             )
             await debug_log(context, f"[USERNAME_EMPTY] 🔇 Мут за отсутствие username: user_id={user.id}")
 
-            keyboard = InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔁 Проверить username", callback_data=f"check_username:{user.id}")]
+            keyboard = telegram.InlineKeyboardMarkup([
+                [telegram.InlineKeyboardButton("🔁 Проверить username", callback_data=f"check_username:{user.id}")]
             ])
 
             await message.reply_text(
@@ -937,7 +927,7 @@ async def check_empty_username(update: Update, context: ContextTypes.DEFAULT_TYP
             await debug_log(context, f"[USERNAME_EMPTY] ❗ Ошибка при муте: {e}")
 
 # КНОПКА ПРОВЕРКИ НА ПУСТОЙ ЮЗЕРНЕЙМ
-async def handle_check_username(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_check_username(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
@@ -947,8 +937,8 @@ async def handle_check_username(update: Update, context: ContextTypes.DEFAULT_TY
     await debug_log(context, f"[USERNAME_BTN] 🔍 Кнопка проверки username: user_id={user.id}, username={user.username}")
 
     if not user.username:
-        keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔁 Проверить снова", callback_data=f"check_username:{user.id}")]
+        keyboard = telegram.InlineKeyboardMarkup([
+            [telegram.InlineKeyboardButton("🔁 Проверить снова", callback_data=f"check_username:{user.id}")]
         ])
         await query.edit_message_text(
             "❌ Username (имя пользователя) всё ещё не установлено. Пожалуйста, обновите профиль и попробуйте снова.",
@@ -960,7 +950,7 @@ async def handle_check_username(update: Update, context: ContextTypes.DEFAULT_TY
             await context.bot.restrict_chat_member(
                 chat_id=chat.id,
                 user_id=user.id,
-                permissions=ChatPermissions(can_send_messages=True)
+                permissions=telegram.ChatPermissions(can_send_messages=True)
             )
             await query.edit_message_text("✅ Username (имя пользователя) найдено. Мут снят.")
             await debug_log(context, f"[USERNAME_BTN] ✅ Username установлен, мут снят: user_id={user.id}")
@@ -968,7 +958,7 @@ async def handle_check_username(update: Update, context: ContextTypes.DEFAULT_TY
             await debug_log(context, f"[USERNAME_BTN] ❗ Ошибка при размуте: {e}")
 
 # АНТИСПАМ
-async def check_spam(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def check_spam(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     message = update.message
     user = update.effective_user
     chat = update.effective_chat
@@ -1003,7 +993,7 @@ async def check_spam(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.restrict_chat_member(
                 chat_id=chat.id,
                 user_id=user.id,
-                permissions=ChatPermissions(can_send_messages=False),
+                permissions=telegram.ChatPermissions(can_send_messages=False),
                 until_date=until_date
             )
             await message.reply_text(
@@ -1017,7 +1007,7 @@ async def check_spam(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # КАПЧА ПРИ ВХОДЕ - ВЫВОД
 CAPTCHA_EMOJIS = ["🫖", "☕️", "🧋", "🍵", "🍺", "🧃", "🥤", "🥃"]
 
-async def on_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def on_new_member(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     for user in update.message.new_chat_members:
         if user.is_bot:
             continue
@@ -1030,7 +1020,7 @@ async def on_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.restrict_chat_member(
                 chat_id=chat_id,
                 user_id=user.id,
-                permissions=ChatPermissions(can_send_messages=False)
+                permissions=telegram.ChatPermissions(can_send_messages=False)
             )
             await debug_log(context, f"[CAPTCHA_JOIN] 🔇 Пользователь {user.id} замучен до прохождения капчи")
         except Exception as e:
@@ -1042,8 +1032,8 @@ async def on_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE):
         options = fake + [correct]
         random.shuffle(options)
 
-        keyboard = InlineKeyboardMarkup([
-            [InlineKeyboardButton(e, callback_data=f"captcha:{user.id}:{e}:{correct}")]
+        keyboard = telegram.InlineKeyboardMarkup([
+            [telegram.InlineKeyboardButton(e, callback_data=f"captcha:{user.id}:{e}:{correct}")]
             for e in options
         ])
 
@@ -1071,7 +1061,7 @@ async def on_new_member(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # ОБРАБОТКА НАЖАТИЯ КАПЧИ
-async def handle_captcha_press(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_captcha_press(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
 
@@ -1106,7 +1096,7 @@ async def handle_captcha_press(update: Update, context: ContextTypes.DEFAULT_TYP
             await context.bot.restrict_chat_member(
                 chat_id=chat_id,
                 user_id=user.id,
-                permissions=ChatPermissions(can_send_messages=True)
+                permissions=telegram.ChatPermissions(can_send_messages=True)
             )
             await context.bot.send_message(chat_id, f"✅ {user.full_name}, добро пожаловать!")
             await debug_log(context, f"[CAPTCHA_PRESS] 🔓 Размут пользователя: {user.id}")
@@ -1137,7 +1127,7 @@ async def kick_if_no_captcha(context: ContextTypes.DEFAULT_TYPE):
 
 # ❗️❗️❗️ АВТОСООБЩЕНИЯ БОТА ---------------------------------------------------------
 # АВТОСООБЩЕНИЕ ПРО РАЗМУТ, РАЗБАН И ТД
-async def chat_member_update(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def chat_member_update(update: telegram.Update, context: ContextTypes.DEFAULT_TYPE):
     old = update.chat_member.old_chat_member
     new = update.chat_member.new_chat_member
     chat = update.effective_chat
