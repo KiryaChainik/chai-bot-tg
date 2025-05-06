@@ -5,24 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f5b8add1-fa8f-48c9-8487-414cf7ec7d8a" name="Changes" comment="First commit">
-      <change afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handlers/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handlers/automsg.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handlers/captcha.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handlers/commands.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handlers/filters.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handlers/forward.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handlers/leave.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handlers/moderation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handlers/rules.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/handlers/warn.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/logger.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/user_events.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bot.py" beforeDir="false" afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/moderation.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/moderation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/rules.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/rules.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handlers/warn.py" beforeDir="false" afterPath="$PROJECT_DIR$/handlers/warn.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,7 +185,7 @@
       <workItem from="1746468647985" duration="61000" />
       <workItem from="1746468715923" duration="3672000" />
       <workItem from="1746472402488" duration="4484000" />
-      <workItem from="1746481269997" duration="31381000" />
+      <workItem from="1746481269997" duration="31624000" />
     </task>
     <task id="LOCAL-00001" summary="First commit">
       <option name="closed" value="true" />
@@ -242,7 +227,23 @@
       <option name="project" value="LOCAL" />
       <updated>1746539793997</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="First commit">
+      <option name="closed" value="true" />
+      <created>1746567535964</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1746567535964</updated>
+    </task>
+    <task id="LOCAL-00007" summary="First commit">
+      <option name="closed" value="true" />
+      <created>1746567546394</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1746567546394</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -255,7 +256,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/chai_tg_bot$.coverage" NAME=" Coverage Results" MODIFIED="1746551364052" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/chai_tg_bot$Run_all_tests.coverage" NAME="Run all tests Coverage Results" MODIFIED="1746480213508" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/chai_tg_bot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1746567200431" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/chai_tg_bot$bot.coverage" NAME="bot Coverage Results" MODIFIED="1746567441603" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/chai_tg_bot$chai_tg_bot.coverage" NAME="bot Coverage Results" MODIFIED="1746480012854" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
