@@ -15,11 +15,11 @@ async def ban_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     is_anonymous_admin = (
-            user
-            and user.is_bot
-            and user.username == "GroupAnonymousBot"
-            and sender_chat
-            and sender_chat.id == chat.id
+        user
+        and user.is_bot
+        and user.username == "GroupAnonymousBot"
+        and sender_chat
+        and sender_chat.id == chat.id
     )
 
     is_authorized = False
@@ -126,10 +126,10 @@ async def unban_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     is_authorized = False
     if (
-            user
-            and user.username == "GroupAnonymousBot"
-            and sender_chat
-            and sender_chat.id == chat.id
+        user
+        and user.username == "GroupAnonymousBot"
+        and sender_chat
+        and sender_chat.id == chat.id
     ):
         is_authorized = True
         await debug_log(context, "[UNBAN] ✅ Подтверждён анонимный админ")
@@ -217,11 +217,11 @@ async def kick_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     is_anonymous_admin = (
-            user
-            and user.is_bot
-            and user.username == "GroupAnonymousBot"
-            and sender_chat
-            and sender_chat.id == chat.id
+        user
+        and user.is_bot
+        and user.username == "GroupAnonymousBot"
+        and sender_chat
+        and sender_chat.id == chat.id
     )
 
     is_authorized = False
@@ -319,11 +319,11 @@ async def mute_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     is_anonymous_admin = (
-            user
-            and user.is_bot
-            and user.username == "GroupAnonymousBot"
-            and sender_chat
-            and sender_chat.id == chat.id
+        user
+        and user.is_bot
+        and user.username == "GroupAnonymousBot"
+        and sender_chat
+        and sender_chat.id == chat.id
     )
 
     is_authorized = False
@@ -500,11 +500,11 @@ async def unmute_user(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     is_anonymous_admin = (
-            user
-            and user.is_bot
-            and user.username == "GroupAnonymousBot"
-            and sender_chat
-            and sender_chat.id == chat.id
+        user
+        and user.is_bot
+        and user.username == "GroupAnonymousBot"
+        and sender_chat
+        and sender_chat.id == chat.id
     )
 
     is_authorized = False

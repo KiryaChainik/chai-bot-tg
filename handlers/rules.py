@@ -63,11 +63,11 @@ async def set_rules(update: Update, context: ContextTypes.DEFAULT_TYPE):
     is_authorized = False
 
     is_anonymous_admin = (
-            user
-            and user.is_bot
-            and user.username == "GroupAnonymousBot"
-            and sender_chat
-            and sender_chat.id == chat.id
+        user
+        and user.is_bot
+        and user.username == "GroupAnonymousBot"
+        and sender_chat
+        and sender_chat.id == chat.id
     )
 
     if is_anonymous_admin:

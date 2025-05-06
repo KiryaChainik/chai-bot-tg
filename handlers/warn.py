@@ -14,7 +14,7 @@ from utils.logger import debug_log
 
 
 async def warn_user(
-        update: Update, context: ContextTypes.DEFAULT_TYPE, auto_delete: bool = False
+    update: Update, context: ContextTypes.DEFAULT_TYPE, auto_delete: bool = False
 ):
     message = update.message
     chat = update.effective_chat
@@ -150,7 +150,7 @@ async def warn_user(
 
 
 async def full_unwarn(
-        update: Update, context: ContextTypes.DEFAULT_TYPE, auto_delete: bool = False
+    update: Update, context: ContextTypes.DEFAULT_TYPE, auto_delete: bool = False
 ):
     message = update.message
 
@@ -195,7 +195,7 @@ async def full_unwarn(
 
 
 async def unwarn(
-        update: Update, context: ContextTypes.DEFAULT_TYPE, auto_delete: bool = False
+    update: Update, context: ContextTypes.DEFAULT_TYPE, auto_delete: bool = False
 ):
     message = update.message
     target = message.reply_to_message.from_user if message.reply_to_message else None
@@ -245,7 +245,7 @@ async def unwarn(
 
 
 async def unwarn_all_users(
-        update: Update, context: ContextTypes.DEFAULT_TYPE, auto_delete: bool = False
+    update: Update, context: ContextTypes.DEFAULT_TYPE, auto_delete: bool = False
 ):
     message = update.message
     user = update.effective_user
